@@ -40,6 +40,12 @@ public class ProductController {
                               @RequestParam String title,
                               @RequestParam Float cost) {
         productService.save(new Product(id, title, cost));
-        return "redirect:all";
+        return "redirect:/all";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String deleteProduct(@PathVariable Integer id) {
+        productService.deleteById(id);
+        return "redirect:/all";
     }
 }
