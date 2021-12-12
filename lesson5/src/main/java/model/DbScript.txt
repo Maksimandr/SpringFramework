@@ -1,0 +1,14 @@
+drop table if exists products;
+create table if not exists products
+(
+    id    bigserial,
+    title varchar(255),
+    cost  int
+);
+
+insert into products (title, cost)
+values ('Coffee', 100),
+       ('Tea', 70),
+       ('Water', 50);
+
+select * from products;
