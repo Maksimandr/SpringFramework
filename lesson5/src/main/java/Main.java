@@ -1,5 +1,5 @@
-package model;
-
+import dao.ProductDao;
+import model.Product;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 

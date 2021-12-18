@@ -1,5 +1,6 @@
-package model;
+package dao;
 
+import model.Product;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
