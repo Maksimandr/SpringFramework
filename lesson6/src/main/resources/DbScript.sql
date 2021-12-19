@@ -27,7 +27,8 @@ create table if not exists customers_products
 insert into customers (name)
 values ('Иван'),
        ('Анна'),
-       ('Егор');
+       ('Егор'),
+       ('Глеб');
 
 insert into products (title, cost)
 values ('Кофе', 100),
@@ -35,5 +36,18 @@ values ('Кофе', 100),
        ('Сок', 50),
        ('Вода', 10);
 
+insert into customers_products (customer_id, product_id)
+values (1, 1),
+       (1, 3),
+       (1, 4),
+
+       (2, 1),
+       (2, 3),
+
+       (3, 1),
+       (3, 3),
+       (3, 4);
+
 select * from products;
 select * from customers;
+select * from customers_products;

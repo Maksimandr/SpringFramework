@@ -3,6 +3,7 @@ package shop.dao;
 import org.hibernate.Session;
 import org.springframework.stereotype.Component;
 import shop.model.Customer;
+import shop.model.Product;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class CustomerDao {
         this.sessionFactoryDao = sessionFactoryDao;
     }
 
-    public Customer findById(Long id) {
+    public Customer findById(Long id, boolean lazy) {
         try (Session session = sessionFactoryDao.getSession()) {
             session.getTransaction().begin();
 
@@ -24,6 +25,9 @@ public class CustomerDao {
                 customer = session.createNamedQuery("Customer.findById", Customer.class)
                         .setParameter("id", id)
                         .getSingleResult();
+                if (!lazy) {
+                    customer.getProductList().forEach(Product::getId);
+                }
             } catch (Exception e) {
                 System.out.println("нет такого id!");
             }
