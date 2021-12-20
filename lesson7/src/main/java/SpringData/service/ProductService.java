@@ -30,4 +30,16 @@ public class ProductService {
     public void deleteById(Long id) {
         productRepository.deleteById(id);
     }
+
+    public List<Product> findAllByCostIsGreaterThanEqualOrderById(Integer cost) {
+        return  productRepository.findAllByCostIsGreaterThanEqual(cost);
+    }
+
+    public List<Product> findAllByCostIsLessThanEqual(Integer cost) {
+        return  productRepository.findAllByCostIsLessThanEqual(cost);
+    }
+
+    public List<Product> findAllByCostIsBetween(Integer costMin, Integer costMax) {
+        return  productRepository.findAllByCostIsBetween(costMin, costMax);
+    }
 }

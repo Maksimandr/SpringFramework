@@ -29,6 +29,23 @@ public class ProductController {
         return "product_list";
     }
 
+    @PostMapping("/products/min-max")
+    public String getProductsWithCost(@RequestParam(required = false) Integer costMin,
+                                      @RequestParam(required = false) Integer costMax,
+                                      Model model) {
+        System.out.println(costMin + " " + costMax);
+        if (costMin != null && costMax != null) {
+            model.addAttribute("products", productService.findAllByCostIsBetween(costMin, costMax));
+        } else if (costMin != null) {
+            model.addAttribute("products", productService.findAllByCostIsGreaterThanEqualOrderById(costMin));
+        } else if (costMax != null) {
+            model.addAttribute("products", productService.findAllByCostIsLessThanEqual(costMax));
+        } else {
+            model.addAttribute("products", productService.findAll());
+        }
+        return "product_list";
+    }
+
     @GetMapping("/products/{id}")
     public String getProductInfo(@PathVariable Long id, Model model) {
         model.addAttribute("product", productService.findById(id).orElse(new Product()));
