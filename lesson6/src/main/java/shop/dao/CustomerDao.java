@@ -10,14 +10,14 @@ import java.util.List;
 @Component
 public class CustomerDao {
 
-    private final SessionFactoryDao sessionFactoryDao;
+    private final SessionFactoryManager sessionFactoryManager;
 
-    public CustomerDao(SessionFactoryDao sessionFactoryDao) {
-        this.sessionFactoryDao = sessionFactoryDao;
+    public CustomerDao(SessionFactoryManager sessionFactoryManager) {
+        this.sessionFactoryManager = sessionFactoryManager;
     }
 
     public Customer findById(Long id, boolean lazy) {
-        try (Session session = sessionFactoryDao.getSession()) {
+        try (Session session = sessionFactoryManager.getSession()) {
             session.getTransaction().begin();
 
             Customer customer = null;
@@ -38,7 +38,7 @@ public class CustomerDao {
     }
 
     public List<Customer> findAll() {
-        try (Session session = sessionFactoryDao.getSession()) {
+        try (Session session = sessionFactoryManager.getSession()) {
             session.getTransaction().begin();
 
             List<Customer> customerList = session
@@ -51,14 +51,13 @@ public class CustomerDao {
     }
 
     public void deleteById(Long id) {
-        try (Session session = sessionFactoryDao.getSession()) {
+        try (Session session = sessionFactoryManager.getSession()) {
             session.getTransaction().begin();
 
             try {
-                Customer customer = session.createNamedQuery("Customer.findById", Customer.class)
+                session.createQuery("delete from Customer c where c.id = :id")
                         .setParameter("id", id)
-                        .getSingleResult();
-                session.delete(customer);
+                        .executeUpdate();
             } catch (Exception e) {
                 System.out.println("нет такого id!");
             }
@@ -68,7 +67,7 @@ public class CustomerDao {
     }
 
     public void saveOrUpdate(Customer customer) {
-        try (Session session = sessionFactoryDao.getSession()) {
+        try (Session session = sessionFactoryManager.getSession()) {
             session.getTransaction().begin();
 
             session.saveOrUpdate(customer);

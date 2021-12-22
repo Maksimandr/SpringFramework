@@ -24,24 +24,6 @@ public class Main {
     public static void main(String[] args) {
         var context = new AnnotationConfigApplicationContext(Config.class);
 
-        ProductDao productDao = context.getBean(ProductDao.class);
-//        System.out.println(productDao.findById(1L, true));
-//        System.out.println("------------------------------------");
-//        productDao.findAll().forEach(System.out::println);
-//        System.out.println("------------------------------------");
-//        productDao.deleteById(2L);
-//        System.out.println("------------------------------------");
-//        productDao.findAll().forEach(System.out::println);
-
-        CustomerDao customerDao = context.getBean(CustomerDao.class);
-//        System.out.println(customerDao.findById(1L, true));
-//        System.out.println("------------------------------------");
-//        customerDao.findAll().forEach(System.out::println);
-//        System.out.println("------------------------------------");
-//        customerDao.deleteById(2L);
-//        System.out.println("------------------------------------");
-//        customerDao.findAll().forEach(System.out::println);
-
         CustomersProducts customersProducts = context.getBean(CustomersProducts.class);
         customersProducts.productsByCustomerId(1L).forEach(System.out::println);
         customersProducts.customersByProductId(1L).forEach(System.out::println);

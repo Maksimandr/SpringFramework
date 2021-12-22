@@ -10,17 +10,17 @@ import java.util.List;
 @Component
 public class ProductDao {
 
-    private final SessionFactoryDao sessionFactoryDao;
+    private final SessionFactoryManager sessionFactoryManager;
 
-    public ProductDao(SessionFactoryDao sessionFactoryDao) {
-        this.sessionFactoryDao = sessionFactoryDao;
+    public ProductDao(SessionFactoryManager sessionFactoryManager) {
+        this.sessionFactoryManager = sessionFactoryManager;
     }
 
     /**
      * Возвращает по id
      */
     public Product findById(Long id, boolean lazy) {
-        try (Session session = sessionFactoryDao.getSession()) {
+        try (Session session = sessionFactoryManager.getSession()) {
             session.getTransaction().begin();
 
             Product product = null;
@@ -44,7 +44,7 @@ public class ProductDao {
      * Возвращает весь список
      */
     public List<Product> findAll() {
-        try (Session session = sessionFactoryDao.getSession()) {
+        try (Session session = sessionFactoryManager.getSession()) {
             session.getTransaction().begin();
 
             List<Product> productList = session
@@ -60,14 +60,13 @@ public class ProductDao {
      * Удаляет по id
      */
     public void deleteById(Long id) {
-        try (Session session = sessionFactoryDao.getSession()) {
+        try (Session session = sessionFactoryManager.getSession()) {
             session.getTransaction().begin();
 
             try {
-                Product product = session.createNamedQuery("Product.findById", Product.class)
+                session.createQuery("delete from Product p where p.id = :id")
                         .setParameter("id", id)
-                        .getSingleResult();
-                session.delete(product);
+                        .executeUpdate();
             } catch (Exception e) {
                 System.out.println("нет такого id!");
             }
@@ -80,7 +79,7 @@ public class ProductDao {
      * Обновляет по id или сохраняет нового
      */
     public void saveOrUpdate(Product product) {
-        try (Session session = sessionFactoryDao.getSession()) {
+        try (Session session = sessionFactoryManager.getSession()) {
             session.getTransaction().begin();
 
             session.saveOrUpdate(product);
