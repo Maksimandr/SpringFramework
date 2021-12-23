@@ -3,7 +3,6 @@ package SpringData.controller;
 import SpringData.model.Product;
 import SpringData.service.ProductService;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -32,11 +31,10 @@ public class ProductController {
     }
 
     @GetMapping("/products")
-    public String getAllProducts(Model model, @PageableDefault(size = 5) Pageable pageable) {
+    public String getAllProducts(Model model,
+                                 @PageableDefault(size = 7) Pageable pageable) {
         Page<Product> products = productService.findAll(pageable);
-        List<Product> productsList = productService.findAll();
-        Page<Product> productPage = new PageImpl<>(productsList, pageable, productsList.size());
-        int totalPages = productPage.getTotalPages();
+        int totalPages = products.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
                     .boxed()
@@ -44,24 +42,7 @@ public class ProductController {
             model.addAttribute("pageNumbers", pageNumbers);
         }
         model.addAttribute("products", products);
-        model.addAttribute("productPage", productPage);
 
-        return "product_list";
-    }
-
-    @GetMapping("/products/min-max")
-    public String getProductsWithCost(@RequestParam(required = false) Integer costMin,
-                                      @RequestParam(required = false) Integer costMax,
-                                      Model model) {
-        if (costMin != null && costMax != null) {
-            model.addAttribute("products", productService.findAllByCostIsBetween(costMin, costMax));
-        } else if (costMin != null) {
-            model.addAttribute("products", productService.findAllByCostIsGreaterThanEqualOrderById(costMin));
-        } else if (costMax != null) {
-            model.addAttribute("products", productService.findAllByCostIsLessThanEqual(costMax));
-        } else {
-            model.addAttribute("products", productService.findAll());
-        }
         return "product_list";
     }
 
