@@ -42,6 +42,9 @@
         </tr>
         </tbody>
     </table>
+        <tr th:each="page : ${productPage}">
+            <td th:text="${page}">1</td>
+        </tr>
     <h1>Фильтр по цене</h1>
     <form method="get" th:action="@{/products/min-max}"  class="col-md-6">
         <div class="mb-3">
@@ -52,7 +55,7 @@
             <label fclass="form-label">Максимальная цена</label>
             <input type="number" class="form-control" name="costMax">
         </div>
-        <button type="submit" class="btn btn-primary">Сохранить</button>
+        <button type="submit" class="btn btn-primary">Установить</button>
     </form>
 </div>
 </body>
