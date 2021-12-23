@@ -29,7 +29,7 @@ public class ProductController {
         return "product_list";
     }
 
-    @PostMapping("/products/min-max")
+    @GetMapping("/products/min-max")
     public String getProductsWithCost(@RequestParam(required = false) Integer costMin,
                                       @RequestParam(required = false) Integer costMax,
                                       Model model) {

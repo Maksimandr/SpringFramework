@@ -43,7 +43,7 @@
         </tbody>
     </table>
     <h1>Фильтр по цене</h1>
-    <form method="post" th:action="@{/products/min-max}"  class="col-md-6">
+    <form method="get" th:action="@{/products/min-max}"  class="col-md-6">
         <div class="mb-3">
             <label fclass="form-label">Минимальная цена</label>
             <input type="number" class="form-control" name="costMin">
