@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 public class ProductController {
@@ -34,6 +36,13 @@ public class ProductController {
         Page<Product> products = productService.findAll(pageable);
         List<Product> productsList = productService.findAll();
         Page<Product> productPage = new PageImpl<>(productsList, pageable, productsList.size());
+        int totalPages = productPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
         model.addAttribute("products", products);
         model.addAttribute("productPage", productPage);
 
