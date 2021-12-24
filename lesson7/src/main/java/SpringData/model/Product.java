@@ -8,6 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "products")
@@ -20,8 +23,12 @@ public class Product {
     private Long id;
 
     @Column(name = "title")
+    @NotNull
+    @NotEmpty
     private String title;
 
     @Column(name = "cost")
+    @NotNull
+    @Min(0)
     private Integer cost;
 }

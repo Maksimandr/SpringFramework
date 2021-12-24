@@ -7,11 +7,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -53,16 +54,19 @@ public class ProductController {
     }
 
     @GetMapping("/products/add")
-    public String getProductAddFrom() {
+    public String getProductAddFrom(Model model) {
+        Product product = new Product();
+        product.setTitle("Название продукта");
+        model.addAttribute("product", product);
         return "product_form";
     }
 
     @PostMapping("/products/add")
-    public String saveProduct(@RequestParam String title,
-                              @RequestParam Integer cost) {
-        Product product = new Product();
-        product.setTitle(title);
-        product.setCost(cost);
+    public String saveProduct(@Valid Product product,
+                              BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "product_form";
+        }
         productService.save(product);
         return "redirect:/products";
     }
