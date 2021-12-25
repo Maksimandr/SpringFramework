@@ -15,14 +15,18 @@
         <a class="nav-link" aria-current="page" href="/app/products/add">Добавление продукта</a>
     </nav>
     <div class="row">
-        <form method="post" th:action="@{/products/add}"  class="col-md-6">
+        <form method="post" th:action="@{/products/add}"  class="col-md-6" th:object="${product}">
             <div class="mb-3">
                 <label fclass="form-label">Название</label>
-                <input type="text" class="form-control" name="title">
+                <input type="text" class="form-control" id="title" th:field="*{title}">
+                <div th:each="err : ${#fields.errors('title')}" th:text="${err}" class="alert alert-danger">
+                </div>
             </div>
             <div class="mb-3">
                 <label fclass="form-label">Стоимость</label>
-                <input type="number" class="form-control" name="cost">
+                <input type="number" class="form-control" id="cost" th:field="*{cost}">
+                <div th:each="err : ${#fields.errors('cost')}" th:text="${err}" class="alert alert-danger">
+                </div>
             </div>
             <a th:href="@{'/'}" class="btn btn-secondary">Отмена</a>
             <button type="submit" class="btn btn-primary">Сохранить</button>
