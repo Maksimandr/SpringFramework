@@ -47,7 +47,7 @@ public class ProductController {
         return "product_list";
     }
 
-    @GetMapping("/products/{id}")
+    @GetMapping("/products/info/{id}")
     public String getProductInfo(@PathVariable Long id, Model model) {
         model.addAttribute("product", productService.findById(id).orElse(new Product()));
         return "product_info";
@@ -55,9 +55,13 @@ public class ProductController {
 
     @GetMapping("/products/add")
     public String getProductAddFrom(Model model) {
-        Product product = new Product();
-        product.setTitle("Название продукта");
-        model.addAttribute("product", product);
+        model.addAttribute("product", new Product());
+        return "product_form";
+    }
+
+    @GetMapping("/products/edit/{id}")
+    public String getProductEditFrom(@PathVariable Long id, Model model) {
+        model.addAttribute("product", productService.findById(id).orElse(new Product()));
         return "product_form";
     }
 
@@ -67,7 +71,11 @@ public class ProductController {
         if (bindingResult.hasErrors()) {
             return "product_form";
         }
-        productService.save(product);
+        if (product.getId() != null) {
+            productService.updateProductById(product);
+        } else {
+            productService.save(product);
+        }
         return "redirect:/products";
     }
 
