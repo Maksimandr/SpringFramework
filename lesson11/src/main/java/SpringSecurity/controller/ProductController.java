@@ -71,11 +71,7 @@ public class ProductController {
         if (bindingResult.hasErrors()) {
             return "product_form";
         }
-        if (product.getId() != null) {
-            productService.updateProductById(product);
-        } else {
-            productService.save(product);
-        }
+        productService.save(product);
         return "redirect:/products";
     }
 
